@@ -36,7 +36,7 @@ class ContactHelper{
 
   Future<Contact> saveContact(Contact contact) async{
     Database dbContact = await db;
-    contact.id = await dbContact.insert(contactTable, contact.toMap() as Map<String, Object>);
+    contact.id = await dbContact.insert(contactTable, contact.toMap() as Map<String, Object?>);
     return contact;
   }
 
@@ -66,7 +66,7 @@ class ContactHelper{
   Future<List> getAllContacts() async{
     Database dbContact = await db;
     List listMap = await dbContact.rawQuery("SELECT * FROM $contactTable");
-    List<Contact> listContact=List.empty();
+    List<Contact> listContact=List.empty(growable: true);
     for(Map m in listMap){
       listContact.add(Contact.fromMap(m));
     }
@@ -92,6 +92,7 @@ class Contact{
     phone = map[phoneColumn];
     img = map[imgColumn];
   }
+  Contact();
 
   int? id;
   String? name;
@@ -113,6 +114,6 @@ class Contact{
 
   @override
   String toString() {
-    return "Contact(Id: $id, Name: $name, Email: $email, Phone: $phone, Img: $img)";
+    return "Contact(Id: $id, Name: $name, Email: $email, Phone: $phone, Img: $img)\n";
   }
 }
